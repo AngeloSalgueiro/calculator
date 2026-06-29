@@ -1,0 +1,56 @@
+struct ButtonData {
+    value: string,
+}
+
+component CalculatorButton inherits Rectangle {
+    callback clicked;
+    in property <bool> button_state;
+    in property <string> button_value;
+
+    background: #FFFFFF;
+    border-width: 1px;
+    border-color: touch.pressed ? transparent : black;
+    width: 50px;
+    height: 50px;
+
+    touch := TouchArea {
+        clicked => {
+            root.clicked();
+        }
+    }
+
+    Text {
+        text: button_value;
+        color: touch.pressed ? black : white;
+    }
+}
+
+component Calculator inherits Rectangle {
+    in property <[ButtonData]> Calculator_buttons: [
+        { value: "0" },
+        { value: "1"},
+        { value: "2" },
+        { value: "3" },
+        { value: "4" },
+        { value: "5" },
+        { value: "6" },
+        { value: "7" },
+    ];
+    for button[i] in Calculator_buttons : CalculatorButton {
+        x: mod(i, 4) * 74px;
+        y: floor(i / 4) * 74px;
+
+        button_value: button.value;
+
+        clicked => {
+            
+        }
+    }
+}
+
+export component MainWindow inherits Window {
+    width: 326px;
+    height: 326px;
+
+    Calculator {}
+}
