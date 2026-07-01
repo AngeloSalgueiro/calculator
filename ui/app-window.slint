@@ -39,6 +39,7 @@ component Calculator inherits Rectangle {
 
             TextInput {
                 text: input_value.is-empty ? "0" : input_value;
+                font-size: 30px;
                 read-only: true;
                 color: black;
                 width: max(parent.width, self.preferred-width);

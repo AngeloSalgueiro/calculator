@@ -2,6 +2,7 @@
 pub struct CalculatorModel {
     x: Option<f64>,
     y: Option<f64>,
+    current_operator: Option<String>
 }
 
 impl CalculatorModel {
