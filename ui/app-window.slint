@@ -7,7 +7,24 @@ struct ButtonData {
 component Calculator inherits Rectangle {
     callback add-number(value: string);
     in property <string> input_value: "0";
-    in property <[string]> Calculator_buttons: ["7", "8", "9", "4", "5", "6", "1", "2", "3", "0"];
+    in property <[string]> Calculator_buttons: [
+        "7",
+        "8",
+        "9",
+        "/",
+        "4",
+        "5",
+        "6",
+        "*",
+        "1",
+        "2",
+        "3",
+        "-",
+        "0",
+        ".",
+        "-/+",
+        "+"
+    ];
 
     VerticalLayout {
         cross-axis-alignment: center;
@@ -43,11 +60,11 @@ component Calculator inherits Rectangle {
             spacing: 5px;
 
             for button[i] in Calculator_buttons: Button {
-                width: 35px;
+                width: 50px;
                 height: 35px;
                 text: button;
-                row: floor(i / 3);
-                col: mod(i, 3);
+                row: floor(i / 4);
+                col: mod(i, 4);
 
                 clicked => {
                     root.add-number(button)
