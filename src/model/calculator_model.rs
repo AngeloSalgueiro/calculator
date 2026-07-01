@@ -1,32 +1,56 @@
-#[derive(Debug)]
-pub struct CalculatorModel{
-    x: f64,
-    y: f64,
+#[derive(Default)]
+pub struct CalculatorModel {
+    x: Option<f64>,
+    y: Option<f64>,
 }
 
-impl CalculatorModel{
-    fn set_x(mut self, num: f64){
-        self.x = num;
+impl CalculatorModel {
+    pub fn get_x(&self) -> Option<f64> {
+        return self.x;
     }
 
-    fn set_y(mut self, num: f64){
-        self.y = num;
+    pub fn get_y(&self) -> Option<f64> {
+        return self.y;
     }
 
-    fn add(self) -> f64{
-        return self.x + self.y;
+    pub fn set_x(&mut self, num: f64) {
+        self.x = Some(num);
     }
 
-    fn sub(self) -> f64{
-        return self.x - self.y;
+    pub fn set_y(&mut self, num: f64) {
+        self.y = Some(num);
     }
 
-    fn mul(self) -> f64{
-        return self.x * self.y;
+    pub fn add(&self) -> Option<f64> {
+        if self.x == None && self.y == None {
+            return Some(self.x.unwrap() + self.y.unwrap());
+        } else {
+            return None;
+        }
+    }
+
+    pub fn sub(&self) -> Option<f64> {
+        if self.x == None && self.y == None {
+            return Some(self.x.unwrap() - self.y.unwrap());
+        } else {
+            return None;
+        }
+    }
+
+    pub fn mul(&self) -> Option<f64> {
+        if self.x == None && self.y == None {
+            return Some(self.x.unwrap() * self.y.unwrap());
+        } else {
+            return None;
+        }
     }
 
     // Adding later dividing by 0 handling
-    fn div(self) -> f64{
-        return self.x / self.y;
+    pub fn div(&self) -> Option<f64> {
+        if self.x == None && self.y == None {
+            return Some(self.x.unwrap() / self.y.unwrap());
+        } else {
+            return None;
+        }
     }
 }
