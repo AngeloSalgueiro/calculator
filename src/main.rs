@@ -1,30 +1,38 @@
 use crate::model::calculator_model::CalculatorModel;
 use slint::SharedString;
-use is_digit::IsDigit;
 
 pub mod model;
 
 slint::include_modules!();
 
 fn main() {
-    let mut model: CalculatorModel = Default::default();
-    model.set_x(5.0);
+    // View
     let main_window = MainWindow::new().unwrap();
     let weak_window = main_window.as_weak();
 
-    // let x = model.get_x();
-    // let new_value = SharedString::from(x.or(Some(0.0)).unwrap().to_string());
+    main_window.on_send_carac(move |value: SharedString| {
+        let temp = value.as_str();
+        let ui = weak_window.unwrap();
+        let mut current_input = ui.get_input_value().to_string();
 
-    // let ui = weak_window.unwrap();
-    // ui.set_input_value(new_value);
-    main_window.on_add_number(move |value: SharedString| {
-        let temp  = value.to_string();
-        
-        if temp.len() <= 1 && temp.is_dec_digit() {
-            let ui = weak_window.unwrap();
-            let current_input = ui.get_input_value().to_string();
-            let new_value = SharedString::from(format!("{}{}", current_input, value));
-            ui.set_input_value(new_value);
+        match temp {
+            "=" => {
+                let result = CalculatorModel::string_executer(current_input);
+                ui.set_placeholder_value(result.into());
+                ui.set_input_value("".into());
+            }
+            "C" => {
+                ui.set_input_value("".into());
+            }
+            "<-" => {
+                current_input.pop();
+                ui.set_input_value(current_input.into())
+            }
+            _ => {
+                let new_value = SharedString::from(format!("{}{}", current_input, value));
+                ui.set_input_value(new_value);
+                ui.set_placeholder_value("".into());
+            }
         }
     });
 
