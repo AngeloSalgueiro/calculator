@@ -1,7 +1,4 @@
 # Calculator application
-
-A simple calculator.
-
 ## About
 
 A simple calculator developped using slint for it's user interface and rust for the backend.
