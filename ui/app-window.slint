@@ -19,9 +19,10 @@ component Calculator inherits Rectangle {
         "3",
         "-",
         "0",
-        ".",
-        "=",
+        "(",
+        ")",
         "+"
+        
     ];
 
     VerticalLayout {
@@ -73,6 +74,30 @@ component Calculator inherits Rectangle {
 
                 clicked => {
                     root.send-carac("<-")
+                }
+            }
+
+            Button {
+                width: 50px;
+                height: 35px;
+                text: ".";
+                row: 2;
+                col: 5;
+
+                clicked => {
+                    root.send-carac(".")
+                }
+            }
+
+            Button {
+                width: 50px;
+                height: 35px;
+                text: "=";
+                row: 3;
+                col: 5;
+
+                clicked => {
+                    root.send-carac("=")
                 }
             }
         }
