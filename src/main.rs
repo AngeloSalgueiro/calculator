@@ -22,7 +22,7 @@ fn main() {
         match temp {
             "=" => {
                 if current_input != "" {
-                    let result = CalculatorModel::string_executer(current_input);
+                    let result = CalculatorModel::string_executer(current_input.as_str());
                     ui.set_placeholder_value(result.clone().into());
                     ui.set_input_value(result.into());
                 }
@@ -65,13 +65,16 @@ fn main() {
 
         match temp {
             "\u{8}" => {
+                if current_placeholder.is_empty() || !current_placeholder.parse::<f64>().is_ok() {
+                    ui.set_input_value("".into());
+                }
                 ui.set_placeholder_value("".into());
             }
-            "*" => {},
-            "x" => {},
-            "/" => {},
-            "+" => {},
-            "-" => {},
+            "*" => clear_values(ui, current_placeholder),
+            "x" => clear_values(ui, current_placeholder),
+            "/" => clear_values(ui, current_placeholder),
+            "+" => clear_values(ui, current_placeholder),
+            "-" => clear_values(ui, current_placeholder),
             _ => {
                 if value >= " " && value <= "~" {
                     if current_input == current_placeholder {
@@ -84,6 +87,12 @@ fn main() {
     });
 
     main_window.run().unwrap();
+}
+
+fn clear_values(ui: MainWindow, current_placeholder: String) {
+    if !current_placeholder.is_empty() && current_placeholder.parse::<f64>().is_ok() {
+        ui.set_placeholder_value("".into());
+    }
 }
 
 fn set_values(

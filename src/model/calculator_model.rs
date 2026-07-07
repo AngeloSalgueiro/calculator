@@ -1,11 +1,12 @@
-use meval::eval_str;
+use fasteval;
 
 #[derive(Default)]
 pub struct CalculatorModel {}
 
 impl CalculatorModel {
-    pub fn string_executer(operation: String) -> String {
-        let operation_result = eval_str(operation);
+    pub fn string_executer(operation: &str) -> String {
+        let mut ns: fasteval::EmptyNamespace = fasteval::EmptyNamespace;
+        let operation_result = fasteval::ez_eval(operation, &mut ns);
 
         let result = match operation_result {
             Ok(v) if v.is_infinite() => "Cannot divide by zero".to_string(),

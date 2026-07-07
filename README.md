@@ -20,3 +20,5 @@ A simple calculator developped using slint for it's user interface and rust for 
     ```
     cargo run
     ```
+
+Icon source : https://www.svgrepo.com/svg/109631/calculator

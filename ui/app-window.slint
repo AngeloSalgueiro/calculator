@@ -33,24 +33,48 @@ component Calculator inherits Rectangle {
         init => {
             input.focus();
         }
+        
+        Rectangle {
+            background: white;
+            border-color: #c0c0c0;
+            border-width: 1px;
+            border-radius: 4px;
 
-        input := LineEdit {
-            width: parent.width - 50px;
             height: 40px;
-            font-size: 20px;
-            placeholder-text: root.placeholder_value != "" ? root.placeholder_value : "0";
+            width: parent.width - 25px;
 
-            key-pressed(event) => {
-                if event.text == "x" {
-                    root.send-key("x")
-                } else {
-                    root.send-key(event.text);
+            input := TextInput {
+                vertical-alignment: center;
+                x: 8px;
+                color: black;
+                width: parent.width - 16px;
+                height: parent.height;
+                font-size: 20px;
+
+                key-pressed(event) => {
+                    if event.text == "x" {
+                        root.send-key("x")
+                    } else {
+                        root.send-key(event.text);
+                    }
+                    return reject;
                 }
-                return reject;
+
+                accepted() => {
+                    root.send-carac("=")
+                }
             }
 
-            accepted(text) => {
-                root.send-carac("=")
+            Text {
+                x: 8px;
+                width: parent.width - 16px;
+                height: parent.height;
+
+                text: "0";
+                font-size: 20px;
+                color: #888;
+                visible: input.text == "";
+                vertical-alignment: center;
             }
         }
 
