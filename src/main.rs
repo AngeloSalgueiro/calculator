@@ -38,7 +38,6 @@ fn main() {
             "+" => set_values(ui, current_input, current_placeholder, value),
             "-" => set_values(ui, current_input, current_placeholder, value),
             _ => {
-                println!("{}{}", current_input, current_placeholder);
                 if current_input == current_placeholder {
                     ui.set_input_value(value);
                     ui.set_placeholder_value("".into());
