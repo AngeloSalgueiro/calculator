@@ -10,9 +10,12 @@ fn main() {
     let main_window = MainWindow::new().unwrap();
     let weak_window = main_window.as_weak();
 
+    // Button pressed
+    let weak_window_send = weak_window.clone();
+
     main_window.on_send_carac(move |value: SharedString| {
         let temp = value.as_str();
-        let ui = weak_window.unwrap();
+        let ui = weak_window_send.unwrap();
         let mut current_input = ui.get_input_value().to_string();
         let current_placeholder = ui.get_placeholder_value().to_string();
 
@@ -34,6 +37,7 @@ fn main() {
                 ui.set_placeholder_value("".into());
             }
             "*" => set_values(ui, current_input, current_placeholder, value),
+            "x" => set_values(ui, current_input, current_placeholder, "*".into()),
             "/" => set_values(ui, current_input, current_placeholder, value),
             "+" => set_values(ui, current_input, current_placeholder, value),
             "-" => set_values(ui, current_input, current_placeholder, value),
@@ -44,6 +48,35 @@ fn main() {
                 } else {
                     let new_value = SharedString::from(format!("{}{}", current_input, value));
                     ui.set_input_value(new_value);
+                    ui.set_placeholder_value("".into());
+                }
+            }
+        }
+    });
+
+    // Key pressed
+    let weak_window_key = weak_window.clone();
+
+    main_window.on_send_key(move |value: SharedString| {
+        let temp = value.as_str();
+        let ui = weak_window_key.unwrap();
+        let current_input = ui.get_input_value().to_string();
+        let current_placeholder = ui.get_placeholder_value().to_string();
+
+        match temp {
+            "\u{8}" => {
+                ui.set_placeholder_value("".into());
+            }
+            "*" => {},
+            "x" => {},
+            "/" => {},
+            "+" => {},
+            "-" => {},
+            _ => {
+                if value >= " " && value <= "~" {
+                    if current_input == current_placeholder {
+                        ui.set_input_value("".into());
+                    }
                     ui.set_placeholder_value("".into());
                 }
             }

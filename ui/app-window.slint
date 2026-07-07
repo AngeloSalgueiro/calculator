@@ -2,6 +2,7 @@ import { Button, GridBox, LineEdit } from "std-widgets.slint";
 
 component Calculator inherits Rectangle {
     callback send-carac(string);
+    callback send-key(string);
 
     in-out property <string> input_value <=> input.text;
     in-out property <string> placeholder_value;
@@ -40,22 +41,12 @@ component Calculator inherits Rectangle {
             placeholder-text: root.placeholder_value != "" ? root.placeholder_value : "0";
 
             key-pressed(event) => {
-                if (event.text == "\n") {
-                    root.send-carac("=");
-                    return accept;
+                if event.text == "x" {
+                    root.send-key("x")
+                } else {
+                    root.send-key(event.text);
                 }
-
-                if (event.text == "\u{8}") {
-                    root.send-carac("<-");
-                    return accept;
-                }
-
-                let c = event.text;
-                if (c >= " " && c <= "~") {
-                    root.send-carac(c);
-                    return accept;
-                }
-                return accept;
+                return reject;
             }
 
             accepted(text) => {
@@ -131,7 +122,11 @@ component Calculator inherits Rectangle {
 }
 
 export component MainWindow inherits Window {
+    icon: @image-url("icons/design.svg");
+    title: @tr("Calculator");
+
     callback send-carac(string);
+    callback send-key(string);
 
     in-out property <string> input_value <=> calc.input_value;
     in-out property <string> placeholder_value <=> calc.placeholder_value;
@@ -141,5 +136,6 @@ export component MainWindow inherits Window {
 
     calc := Calculator {
         send-carac(value) => { root.send-carac(value) }
+        send-key(value) => { root.send-key(value) }
     }
 }
