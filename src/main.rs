@@ -18,9 +18,11 @@ fn main() {
 
         match temp {
             "=" => {
-                let result = CalculatorModel::string_executer(current_input);
-                ui.set_placeholder_value(result.clone().into());
-                ui.set_input_value(result.into());
+                if current_input != "" {
+                    let result = CalculatorModel::string_executer(current_input);
+                    ui.set_placeholder_value(result.clone().into());
+                    ui.set_input_value(result.into());
+                }
             }
             "C" => {
                 ui.set_input_value("".into());
@@ -28,13 +30,15 @@ fn main() {
             }
             "<-" => {
                 current_input.pop();
-                ui.set_input_value(current_input.into())
+                ui.set_input_value(current_input.into());
+                ui.set_placeholder_value("".into());
             }
             "*" => set_values(ui, current_input, current_placeholder, value),
             "/" => set_values(ui, current_input, current_placeholder, value),
             "+" => set_values(ui, current_input, current_placeholder, value),
             "-" => set_values(ui, current_input, current_placeholder, value),
             _ => {
+                println!("{}{}", current_input, current_placeholder);
                 if current_input == current_placeholder {
                     ui.set_input_value(value);
                     ui.set_placeholder_value("".into());

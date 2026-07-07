@@ -4,7 +4,7 @@ component Calculator inherits Rectangle {
     callback send-carac(string);
 
     in-out property <string> input_value <=> input.text;
-    in property <string> placeholder_value;
+    in-out property <string> placeholder_value;
     in property <[string]> Calculator_buttons: [
         "7",
         "8",
@@ -22,7 +22,6 @@ component Calculator inherits Rectangle {
         "(",
         ")",
         "+"
-        
     ];
 
     VerticalLayout {
@@ -30,11 +29,38 @@ component Calculator inherits Rectangle {
         padding-top: 15px;
         spacing: 20px;
 
+        init => {
+            input.focus();
+        }
+
         input := LineEdit {
             width: parent.width - 50px;
             height: 40px;
             font-size: 20px;
             placeholder-text: root.placeholder_value != "" ? root.placeholder_value : "0";
+
+            key-pressed(event) => {
+                if (event.text == "\n") {
+                    root.send-carac("=");
+                    return accept;
+                }
+
+                if (event.text == "\u{8}") {
+                    root.send-carac("<-");
+                    return accept;
+                }
+
+                let c = event.text;
+                if (c >= " " && c <= "~") {
+                    root.send-carac(c);
+                    return accept;
+                }
+                return accept;
+            }
+
+            accepted(text) => {
+                root.send-carac("=")
+            }
         }
 
         GridLayout {
